@@ -36,6 +36,7 @@ import nodomain.freeyourgadget.gadgetbridge.GBException;
 import nodomain.freeyourgadget.gadgetbridge.devices.AbstractBLEDeviceCoordinator;
 import nodomain.freeyourgadget.gadgetbridge.devices.InstallHandler;
 import nodomain.freeyourgadget.gadgetbridge.devices.SampleProvider;
+import nodomain.freeyourgadget.gadgetbridge.devices.huawei.HuaweiInstallHandler;
 import nodomain.freeyourgadget.gadgetbridge.entities.AbstractActivitySample;
 import nodomain.freeyourgadget.gadgetbridge.entities.BaseActivitySummaryDao;
 import nodomain.freeyourgadget.gadgetbridge.entities.DaoSession;
@@ -204,7 +205,9 @@ public abstract class HuaweiLECoordinator extends AbstractBLEDeviceCoordinator i
 
     @Override
     public InstallHandler findInstallHandler(Uri uri, Context context) {
-        return null;
+        HuaweiInstallHandler handler = new HuaweiInstallHandler(uri, context);
+        return handler.isValid() ? handler : null;
+
     }
 
     @Override
