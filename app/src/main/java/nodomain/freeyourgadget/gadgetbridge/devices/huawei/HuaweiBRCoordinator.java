@@ -202,9 +202,11 @@ public abstract class HuaweiBRCoordinator extends AbstractBLClassicDeviceCoordin
         return huaweiCoordinator.supportsMusic();
     }
 
+
     @Override
     public InstallHandler findInstallHandler(Uri uri, Context context) {
-        return null;
+        HuaweiInstallHandler handler = new HuaweiInstallHandler(uri, context);
+        return handler.isValid() ? handler : null;
     }
 
     @Override

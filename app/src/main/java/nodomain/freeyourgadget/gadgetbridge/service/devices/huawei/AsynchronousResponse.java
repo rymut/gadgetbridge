@@ -48,6 +48,7 @@ import nodomain.freeyourgadget.gadgetbridge.devices.huawei.packets.FindPhone;
 import nodomain.freeyourgadget.gadgetbridge.devices.huawei.packets.GpsAndTime;
 import nodomain.freeyourgadget.gadgetbridge.devices.huawei.packets.Menstrual;
 import nodomain.freeyourgadget.gadgetbridge.devices.huawei.packets.MusicControl;
+import nodomain.freeyourgadget.gadgetbridge.devices.huawei.packets.WatchfaceUpload;
 import nodomain.freeyourgadget.gadgetbridge.devices.huawei.packets.Weather;
 import nodomain.freeyourgadget.gadgetbridge.externalevents.gps.GBLocationListener;
 import nodomain.freeyourgadget.gadgetbridge.externalevents.gps.GBLocationManager;
@@ -102,6 +103,7 @@ public class AsynchronousResponse {
             handleMenstrualModifyTime(response);
             handleWeatherCheck(response);
             handleGpsRequest(response);
+            handleWatchfaceHash(response);
         } catch (Request.ResponseParseException e) {
             LOG.error("Response parse exception", e);
         }
@@ -382,6 +384,12 @@ public class AsynchronousResponse {
             } catch (IOException e) {
                 e.printStackTrace();
             }
+
+        }
+    }
+
+    private void handleWatchfaceHash(HuaweiPacket response) {
+        if (response.serviceId == WatchfaceUpload.id && response.commandId == WatchfaceUpload.WatchfaceSendHash.id) {
 
         }
     }
