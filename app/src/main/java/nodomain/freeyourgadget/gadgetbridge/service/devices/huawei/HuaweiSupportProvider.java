@@ -1837,7 +1837,9 @@ public class HuaweiSupportProvider {
 
     public void onInstallApp(Uri uri) {
         LOG.info("enter onAppInstall uri: "+uri);
+        huaweiUploadManager.setFileName(getHuaweiCoordinator().getHuaweiWatchfaceManager().getRandomName());
         huaweiUploadManager.setWatchfaceUri(uri);
+
 
         SendFileUploadInfo sendFileUploadInfo = new SendFileUploadInfo(this, huaweiUploadManager);
 
