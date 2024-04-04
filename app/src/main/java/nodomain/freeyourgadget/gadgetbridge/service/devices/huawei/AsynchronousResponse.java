@@ -49,6 +49,7 @@ import nodomain.freeyourgadget.gadgetbridge.devices.huawei.packets.GpsAndTime;
 import nodomain.freeyourgadget.gadgetbridge.devices.huawei.packets.Menstrual;
 import nodomain.freeyourgadget.gadgetbridge.devices.huawei.packets.MusicControl;
 import nodomain.freeyourgadget.gadgetbridge.devices.huawei.packets.FileUpload;
+import nodomain.freeyourgadget.gadgetbridge.devices.huawei.packets.Watchface;
 import nodomain.freeyourgadget.gadgetbridge.devices.huawei.packets.Weather;
 import nodomain.freeyourgadget.gadgetbridge.externalevents.gps.GBLocationListener;
 import nodomain.freeyourgadget.gadgetbridge.externalevents.gps.GBLocationManager;
@@ -59,6 +60,7 @@ import nodomain.freeyourgadget.gadgetbridge.service.devices.huawei.requests.Send
 import nodomain.freeyourgadget.gadgetbridge.service.devices.huawei.requests.SendFileUploadAck;
 import nodomain.freeyourgadget.gadgetbridge.service.devices.huawei.requests.SendFileUploadChunk;
 import nodomain.freeyourgadget.gadgetbridge.service.devices.huawei.requests.SendFileUploadHash;
+import nodomain.freeyourgadget.gadgetbridge.service.devices.huawei.requests.SendWatchfaceConfirm;
 import nodomain.freeyourgadget.gadgetbridge.service.devices.huawei.requests.SendWeatherDeviceRequest;
 import nodomain.freeyourgadget.gadgetbridge.service.devices.huawei.requests.SetMusicStatusRequest;
 import nodomain.freeyourgadget.gadgetbridge.util.GB;
@@ -108,6 +110,7 @@ public class AsynchronousResponse {
             handleWeatherCheck(response);
             handleGpsRequest(response);
             handleFileUpload(response);
+            handleWatchface(response);
         } catch (Request.ResponseParseException e) {
             LOG.error("Response parse exception", e);
         }
@@ -435,6 +438,20 @@ public class AsynchronousResponse {
                      LOG.error("Could not send fileupload result request", e);
                  }
              }
+        }
+    }
+
+    private void handleWatchface(HuaweiPacket response) throws Request.ResponseParseException {
+        if (response.serviceId == Watchface.id) {
+            if (response.commandId == Watchface.WatchfaceConfirm.id) {
+                try {
+                    SendWatchfaceConfirm sendWatchfaceConfirm = new SendWatchfaceConfirm(this.support, support.huaweiUploadManager.getFileName());
+                    sendWatchfaceConfirm.doPerform();
+                } catch (IOException e) {
+                    LOG.error("Could not send watchface confirm request", e);
+                }
+
+            }
         }
     }
 
